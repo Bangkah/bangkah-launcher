@@ -12,12 +12,12 @@
             "dist": {
                 "type": "path",
                 "url": "./packages/bangkah/bangkah",
-                "reference": "b861f42505951339aba0c4f126cb6b948e11e897"
+                "reference": "e3e28e9232c9d32096136ded6d26b89cb281819d"
             },
             "require": {
                 "illuminate/console": "^11.0|^12.0",
                 "illuminate/support": "^11.0|^12.0",
-                "php": ">=8.2",
+                "php": ">=8.4",
                 "symfony/process": "^7.0|^6.4"
             },
             "require-dev": {
