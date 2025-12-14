@@ -1483,7 +1483,7 @@ If you're still stuck:
    ```
 
 4. **Open an Issue:**
-   Visit [GitHub Issues](https://github.com/yourusername/bangkah/issues)
+   Visit [GitHub Issues](https://github.com/Bangkah/bangkah-launcher/issues)
 
 ---
 
@@ -1580,8 +1580,8 @@ Jika Anda ingin contribute atau develop Bangkah locally:
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/bangkah.git
-cd bangkah
+git clone https://github.com/Bangkah/bangkah-launcher.git
+cd bangkah-launcher
 
 # Install dependencies
 composer install
@@ -1856,10 +1856,10 @@ SOFTWARE.
 
 ## 👨‍💻 Author
 
-**Atha**
+**Muhammad Dhiyaul Atha**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+- GitHub: [@Bangkah](https://github.com/Bangkah)
+- Organization: [Bangkah](https://github.com/Bangkah)
 
 ---
 
@@ -1881,9 +1881,9 @@ Built with ❤️ and ☕ by developers, for developers.
 ## 🔗 Links
 
 - **Documentation**: [Full Docs](#)
-- **GitHub**: [Repository](https://github.com/yourusername/bangkah)
-- **Issues**: [Bug Reports](https://github.com/yourusername/bangkah/issues)
-- **Discussions**: [Community](https://github.com/yourusername/bangkah/discussions)
+- **GitHub**: [Repository](https://github.com/Bangkah/bangkah-launcher)
+- **Issues**: [Bug Reports](https://github.com/Bangkah/bangkah-launcher)
+- **Discussions**: [Community](https://github.com/Bangkah/bangkah-launcher/discussions)
 - **Laravel**: [laravel.com](https://laravel.com)
 
 ---
