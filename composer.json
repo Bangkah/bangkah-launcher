@@ -3,12 +3,24 @@
   "description": "Bangkah Laravel starter kit: interactive scaffolding, Docker, templates",
   "type": "library",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "bin": ["bin/bangkah"],
   "autoload": {
     "psr-4": {
       "Bangkah\\Starter\\": "src/"
-    }
+    },
+    "exclude-from-classmap": [
+      "/app/",
+      "/bootstrap/",
+      "/config/",
+      "/database/",
+      "/public/",
+      "/resources/",
+      "/routes/",
+      "/storage/",
+      "/tests/",
+      "/vendor/"
+    ]
   },
   "extra": {
     "laravel": {
