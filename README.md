@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Laravel 12.x](https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel)
-![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-777BB4?style=for-the-badge&logo=php)
+![PHP 8.4+](https://img.shields.io/badge/PHP-8.4%2B-777BB4?style=for-the-badge&logo=php)
 ![License MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 ![Composer](https://img.shields.io/badge/Composer-2.0%2B-885630?style=for-the-badge&logo=composer)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
@@ -188,7 +188,7 @@ composer require bangkah/bangkah
 php artisan bangkah:create
 ```
 
-> ⚠️ **Warning**: Bangkah akan modify files seperti `.env`, routes, controllers. Pastikan backup project Anda terlebih dahulu!
+> ⚠️ **Warning**: Bangkah akan modify files seperti `.env`, routes, controllers. File routes akan dibackup otomatis sebagai `*.backup-YYYYMMDDHHMMSS` sebelum diganti.
 
 ### Verification
 
