@@ -1,0 +1,48 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: php-fpm
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    expose:
+      - 9000
+    depends_on:
+      - db
+  nginx:
+    image: nginx:alpine
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+  db:
+    image: mysql:8.0
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=laravel
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_USER=laravel
+      - MYSQL_PASSWORD=secret
+    volumes:
+      - dbdata:/var/lib/mysql
+  node:
+    image: node:20-alpine
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    command: sh -lc "npm install && npm run dev"
+    ports:
+      - 5173:5173
+volumes:
+  dbdata:
