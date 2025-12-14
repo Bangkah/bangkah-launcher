@@ -39,12 +39,10 @@ class TemplateService
         ]);
 
         $apiRoutes = $targetPath.'/routes/api.php';
-        $stub = $this->files->get($this->stubsPath('api/routes/api.stub.php'));
         if ($this->files->exists($apiRoutes)) {
-            $this->files->append($apiRoutes, "\n\n".$stub."\n");
-        } else {
-            $this->files->put($apiRoutes, $stub);
+            $this->files->move($apiRoutes, $apiRoutes.'.backup-'.date('YmdHis'));
         }
+        $this->files->copy($this->stubsPath('api/routes/api.stub.php'), $apiRoutes);
 
         $controllerTarget = $targetPath.'/app/Http/Controllers/Api/HealthController.php';
         if (! $this->files->exists($controllerTarget)) {
