@@ -5,39 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-12-15
-### Added
-- API and Web templates with safe route backups before replacement
-- Docker scaffolding (PHP 8.4-FPM, MySQL 8.0, optional phpMyAdmin)
-- Usage and Docker documentation under `docs/`
-
-### Changed
-- Updated minimum PHP requirement to 8.4
-- Improved environment configuration logic for Docker and database selection
+## [1.0.1] - 2025-12-15
 
 ### Fixed
-- Avoided duplicate `routes/api.php` content by replacing with backup (was appending)
-- Resolved port conflicts guidance and internal-only DB port mapping recommendation
+- Added `exclude-from-classmap` to prevent ambiguous class resolution warnings
+- Ensures clean package distribution without monorepo artifacts
+- Fixes "There are no commands defined in the 'bangkah' namespace" error
 
-### Migration Notes
-- If you previously ran `bangkah:create` with API preset, remove duplicated sections in `routes/api.php` or re-run after this version; backups will be created automatically.
+### Technical
+- Package now properly excludes `/app/`, `/database/`, `/bootstrap/`, `/config/`, `/public/`, `/resources/`, `/routes/`, `/storage/`, `/tests/`, `/vendor/` from classmap generation
+- Clean subtree tagging ensures only package files are distributed
 
-[1.1.0]: https://github.com/Bangkah/bangkah-launcher/releases/tag/v1.1.0
-# Changelog
-
-All notable changes to Bangkah will be documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.1.1] - 2025-12-15
-
-### Fixed
-- 🛠️ Rebuilt package dist to remove escaped characters that caused a PHP parse error in `StarterCreateCommand` when installing from Packagist
-- ✅ Verified fresh `composer require bangkah/bangkah` install succeeds without syntax errors
-
-### Notes
-- Tag `v1.1.1` is a hotfix; no API or behavior changes from 1.1.0
+[1.0.1]: https://github.com/Bangkah/bangkah-launcher/releases/tag/v1.0.1
 
 ## [1.1.0] - 2025-12-15
 
