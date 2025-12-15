@@ -124,7 +124,7 @@ class StarterCreateCommand extends Command
     {
         if ($docker) {
             if ($nginx) {
-                return 'http://localhost';
+                return 'http://localhost:8080';
             }
             return 'http://localhost:8000';
         }
@@ -177,12 +177,6 @@ class StarterCreateCommand extends Command
             // Delete composer.lock to force fresh install
             if (file_exists($targetPath . '/composer.lock')) {
                 unlink($targetPath . '/composer.lock');
-            }
-            
-            // Remove vendor directory
-            if (is_dir($targetPath . '/vendor')) {
-                $fs = new Filesystem();
-                $fs->deleteDirectory($targetPath . '/vendor');
             }
         }
     }
