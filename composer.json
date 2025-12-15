@@ -5,12 +5,7 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./packages/bangkah/bangkah"
-        }
-    ],
+    
     "require": {
         "php": "^8.2",
         "bangkah/bangkah": "^1.0",
