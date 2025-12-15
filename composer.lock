@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0e8b49c80e1f938e1ffd41af3f603e3",
+    "content-hash": "194e00aea2790de75de41785e38c1955",
     "packages": [
         {
             "name": "bangkah/bangkah",
-            "version": "1.0.1",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Bangkah/bangkah-launcher.git",
+                "reference": "276b28bf5ff34b9b25f9c0e8dd1e8f429bf04e89"
+            },
             "dist": {
-                "type": "path",
-                "url": "./packages/bangkah/bangkah",
-                "reference": "cef81fa1b7112c478d975652813bf63ca52b32e2"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Bangkah/bangkah-launcher/zipball/276b28bf5ff34b9b25f9c0e8dd1e8f429bf04e89",
+                "reference": "276b28bf5ff34b9b25f9c0e8dd1e8f429bf04e89",
+                "shasum": ""
             },
             "require": {
                 "illuminate/console": "^11.0|^12.0",
@@ -51,13 +57,16 @@
                     "/vendor/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Bangkah Laravel starter kit: interactive scaffolding, Docker, templates",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/Bangkah/bangkah-launcher/issues",
+                "source": "https://github.com/Bangkah/bangkah-launcher/tree/v1.0.2"
+            },
+            "time": "2025-12-15T15:24:09+00:00"
         },
         {
             "name": "brick/math",

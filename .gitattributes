@@ -1,3 +1,41 @@
+# Exclude non-essential files from source archives (GitHub/Packagist)
+# Docs and meta
+CHANGELOG.md export-ignore
+CONTRIBUTING.md export-ignore
+CODE_OF_CONDUCT.md export-ignore
+DOCS.md export-ignore
+DOCUMENTATION_SUMMARY.txt export-ignore
+FAQ.md export-ignore
+ROADMAP.md export-ignore
+SECURITY.md export-ignore
+SOCIAL_MEDIA_TEMPLATES.md export-ignore
+RELEASE.md export-ignore
+V1.1.0_RELEASE_SUMMARY.md export-ignore
+V1.0.2_RELEASE_NOTES.md export-ignore
+
+# Backups and temp
+routes/web.php.backup-* export-ignore
+**/tmp/ export-ignore
+
+# Tests and CI at repo root
+tests/ export-ignore
+phpunit.xml export-ignore
+
+# Dev scripts
+scripts/ export-ignore
+docker/ export-ignore
+docker-compose.yml export-ignore
+Dockerfile export-ignore
+
+# Example app for testing
+FreshTest/ export-ignore
+
+# Node artifacts
+package.json export-ignore
+vite.config.js export-ignore
+resources/starter/ export-ignore
+resources/js/ export-ignore
+resources/css/ export-ignore
 * text=auto eol=lf
 
 *.blade.php diff=html
