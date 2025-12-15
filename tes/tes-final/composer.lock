@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0e8b49c80e1f938e1ffd41af3f603e3",
+    "content-hash": "4893d980fd86fe49d8635ad12e3047a3",
     "packages": [
         {
             "name": "bangkah/bangkah",
-            "version": "1.0.1",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Bangkah/bangkah-launcher.git",
+                "reference": "e2698c3bc99b257c25a533c134aa7309e73a61f0"
+            },
             "dist": {
-                "type": "path",
-                "url": "./packages/bangkah/bangkah",
-                "reference": "cef81fa1b7112c478d975652813bf63ca52b32e2"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Bangkah/bangkah-launcher/zipball/e2698c3bc99b257c25a533c134aa7309e73a61f0",
+                "reference": "e2698c3bc99b257c25a533c134aa7309e73a61f0",
+                "shasum": ""
             },
             "require": {
                 "illuminate/console": "^11.0|^12.0",
@@ -37,27 +43,18 @@
             "autoload": {
                 "psr-4": {
                     "Bangkah\\Starter\\": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/app/",
-                    "/bootstrap/",
-                    "/config/",
-                    "/database/",
-                    "/public/",
-                    "/resources/",
-                    "/routes/",
-                    "/storage/",
-                    "/tests/",
-                    "/vendor/"
-                ]
+                }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Bangkah Laravel starter kit: interactive scaffolding, Docker, templates",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/Bangkah/bangkah-launcher/issues",
+                "source": "https://github.com/Bangkah/bangkah-launcher/tree/v1.0.0"
+            },
+            "time": "2025-12-14T23:13:21+00:00"
         },
         {
             "name": "brick/math",
@@ -3068,16 +3065,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.16",
+            "version": "v0.12.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "ee6d5028be4774f56c6c2c85ec4e6bc9acfe6b67"
+                "reference": "85fbbd9f3064e157fc21fe4362b2b5c19f2ea631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/ee6d5028be4774f56c6c2c85ec4e6bc9acfe6b67",
-                "reference": "ee6d5028be4774f56c6c2c85ec4e6bc9acfe6b67",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/85fbbd9f3064e157fc21fe4362b2b5c19f2ea631",
+                "reference": "85fbbd9f3064e157fc21fe4362b2b5c19f2ea631",
                 "shasum": ""
             },
             "require": {
@@ -3141,9 +3138,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.16"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.17"
             },
-            "time": "2025-12-07T03:39:01+00:00"
+            "time": "2025-12-15T04:55:34+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
