@@ -10,6 +10,10 @@
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
 [![codecov](https://codecov.io/gh/<USERNAME>/<REPO>/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/<USERNAME>/<REPO>)
 
+![CI](https://github.com/<USERNAME>/<REPO>/actions/workflows/ci.yml/badge.svg)
+![Release](https://img.shields.io/github/v/release/<USERNAME>/<REPO>?style=flat-square)
+![Discussions](https://img.shields.io/github/discussions/<USERNAME>/<REPO>?style=flat-square)
+
 > 📢 **Baca juga:** [Skip the Boilerplate: Scaffold a Production-Ready Laravel Project in Seconds with Bangkah Starter](https://dev.to/bangkah/skip-the-boilerplate-scaffold-a-production-ready-laravel-project-in-seconds-with-bangkah-starter-31p8)
 
 **Scaffold production-ready Laravel projects in seconds with Docker, Nginx, Authentication, and more!**

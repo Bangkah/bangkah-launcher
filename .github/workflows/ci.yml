@@ -9,6 +9,21 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: laravel
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_USER: root
+          MYSQL_PASSWORD: ''
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,9 +40,24 @@ jobs:
       - name: Prepare Laravel Application
         run: |
           cp .env.example .env
+          sed -i 's/DB_USERNAME=.*/DB_USERNAME=root/' .env
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=/' .env
+          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=laravel/' .env
           mkdir -p storage/logs bootstrap/cache
           chmod -R 777 storage bootstrap/cache
           php artisan key:generate
+
+      - name: Wait for MySQL
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h127.0.0.1 -uroot --silent; then
+              echo "MySQL is up!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
 
       - name: Run migrations
         run: php artisan migrate --force
