@@ -1,5 +1,12 @@
+
 # Use the official PHP 8.4 image as base
 FROM php:8.4-cli
+
+# Pastikan sources.list ada, lalu ganti ke mirror yang lebih cepat/terjangkau
+RUN if [ ! -f /etc/apt/sources.list ]; then \
+    echo 'deb http://mirror.leaseweb.com/debian stable main contrib non-free' > /etc/apt/sources.list; \
+fi && \
+sed -i 's|http://deb.debian.org/debian|http://mirror.leaseweb.com/debian|g' /etc/apt/sources.list
 
 
 # Install system dependencies and build tools for pecl

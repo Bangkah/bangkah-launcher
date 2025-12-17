@@ -23,6 +23,10 @@ RUN composer install --no-interaction --prefer-dist --no-progress
 
 FROM php-base AS php-fpm
 COPY . .
-RUN composer install --no-interaction --prefer-dist --no-progress \
-    && chown -R www-data:www-data storage bootstrap/cache
+RUN set -eux; \
+    groupadd --force --gid 1337 sail || true; \
+    useradd --no-log-init --create-home --uid 1337 --gid 1337 sail || true; \
+    composer install --no-interaction --prefer-dist --no-progress; \
+    chown -R sail:sail storage bootstrap/cache
+USER sail
 CMD ["php-fpm"]

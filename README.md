@@ -6,8 +6,11 @@
 ![PHP 8.4+](https://img.shields.io/badge/PHP-8.4%2B-777BB4?style=for-the-badge&logo=php)
 ![License MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 ![Composer](https://img.shields.io/badge/Composer-2.0%2B-885630?style=for-the-badge&logo=composer)
+
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
 [![codecov](https://codecov.io/gh/<USERNAME>/<REPO>/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/<USERNAME>/<REPO>)
+
+> 📢 **Baca juga:** [Skip the Boilerplate: Scaffold a Production-Ready Laravel Project in Seconds with Bangkah Starter](https://dev.to/bangkah/skip-the-boilerplate-scaffold-a-production-ready-laravel-project-in-seconds-with-bangkah-starter-31p8)
 
 **Scaffold production-ready Laravel projects in seconds with Docker, Nginx, Authentication, and more!**
 
@@ -45,7 +48,52 @@
 
 ---
 
-## About
+
+## 🚦 CI & Test Coverage
+
+- Pipeline CI otomatis menjalankan unit test, E2E test (jika diaktifkan), dan meng-upload laporan coverage ke [Codecov](https://codecov.io/gh/<USERNAME>/<REPO>).
+- Lihat badge coverage di atas untuk status terbaru.
+
+### Menjalankan Test Lokal
+
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --force
+vendor/bin/phpunit --coverage-clover=coverage.xml
+# Untuk E2E test (Laravel Dusk):
+php artisan dusk
+```
+
+### E2E Test di CI
+
+Tambahkan dependensi Dusk:
+```bash
+composer require --dev laravel/dusk
+```
+Lalu aktifkan step berikut di workflow CI:
+```yaml
+- name: Install ChromeDriver
+  run: php artisan dusk:chrome-driver
+- name: Run E2E tests (Dusk)
+  run: php artisan dusk
+```
+
+## 🚀 Contoh Deployment Production
+
+Contoh workflow GitHub Actions untuk deploy ke server:
+```yaml
+- name: Deploy to Production Server
+  uses: appleboy/scp-action@v0.1.4
+  with:
+    host: ${{ secrets.PROD_HOST }}
+    username: ${{ secrets.PROD_USER }}
+    key: ${{ secrets.PROD_SSH_KEY }}
+    source: "."
+    target: "/var/www/html"
+```
+
 
 **Bangkah** adalah modern Laravel starter kit package yang dirancang untuk mempercepat development dengan menyediakan scaffolding otomatis untuk berbagai kebutuhan project. Dengan satu command, Anda bisa mendapatkan project Laravel yang sudah dikonfigurasi dengan Docker, Nginx, authentication, database, dan frontend framework pilihan Anda.
 

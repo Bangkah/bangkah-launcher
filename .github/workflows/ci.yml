@@ -7,36 +7,52 @@ on:
     branches: [ main, master ]
 
 jobs:
-  docker-ci:
+  ci:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_mysql, bcmath, xml, zip, gd
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Prepare Laravel Application
         run: |
           cp .env.example .env
+          mkdir -p storage/logs bootstrap/cache
+          chmod -R 777 storage bootstrap/cache
           php artisan key:generate
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Run migrations
+        run: php artisan migrate --force
 
-      - name: Clear Composer cache
-        run: composer clear-cache
-
-      - name: Build CI Docker image
-        run: docker build --network=host -f Dockerfile.ci -t bangkah-ci .
-
-      - name: Run tests in Docker Compose
-        run: docker compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from ci
-
-      - name: Copy coverage report from container
-        run: |
-          docker cp $(docker ps -a -q -f name=bangkah-ci-1):/app/coverage.xml ./coverage.xml || true
+      - name: Run tests
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           files: ./coverage.xml
           fail_ci_if_error: true
+
+      - name: Build release archive
+        run: |
+          mkdir -p dist
+          git archive --format=zip --output=dist/bangkah-$(date +'%Y%m%d').zip HEAD
+
+      - name: Generate SHA256SUMS
+        run: |
+          chmod +x scripts/generate-release-checksums.sh
+          ./scripts/generate-release-checksums.sh dist
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: dist/

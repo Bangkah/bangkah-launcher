@@ -14,24 +14,44 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_mysql, bcmath, xml, zip, gd
 
-      - name: Install Composer
-        run: composer self-update
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      - name: Clear Composer cache
-        run: composer clear-cache
+      - name: Prepare Laravel Application
+        run: |
+          cp .env.example .env
+          mkdir -p storage/logs bootstrap/cache
+          chmod -R 777 storage bootstrap/cache
+          php artisan key:generate
 
       - name: Configure GitHub Packages Auth
-        run: composer config --global github-oauth.github.com ${{ vars.PAT_TOKEN }}
+        run: composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
       - name: Ensure composer.lock is up to date
         run: composer update --lock
 
       - name: Publish to GitHub Packages
         run: |
-          composer install --no-interaction --no-progress
           composer config repositories.github-packages composer https://packagist.pkg.github.com/Bangkah
           composer publish
         env:
-          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ vars.PAT_TOKEN }}"}}'
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
+
+      - name: Build release archive
+        run: |
+          mkdir -p dist
+          git archive --format=zip --output=dist/bangkah-$(date +'%Y%m%d').zip HEAD
+
+      - name: Generate SHA256SUMS
+        run: |
+          chmod +x scripts/generate-release-checksums.sh
+          ./scripts/generate-release-checksums.sh dist
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts
+          path: dist/
