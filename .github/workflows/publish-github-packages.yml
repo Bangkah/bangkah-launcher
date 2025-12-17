@@ -78,3 +78,10 @@ jobs:
           git add CHANGELOG.md
           git commit -m "chore: update changelog [skip ci]" || echo "No changes to commit"
           git push origin HEAD:main || echo "No changes to push"
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true
+          token: ${{ secrets.PAT_TOKEN }}
