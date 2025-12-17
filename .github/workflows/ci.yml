@@ -33,6 +33,15 @@ jobs:
           chmod -R 777 storage bootstrap/cache
           php artisan key:generate
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install NPM dependencies
+        run: npm install
+      - name: Build frontend assets
+        run: npx vite build
+
       - name: Run tests
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
