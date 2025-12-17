@@ -22,3 +22,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+# Ignore code coverage reports
+coverage.xml
+coverage/

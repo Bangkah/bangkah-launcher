@@ -7,6 +7,7 @@
 ![License MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 ![Composer](https://img.shields.io/badge/Composer-2.0%2B-885630?style=for-the-badge&logo=composer)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker)
+[![codecov](https://codecov.io/gh/<USERNAME>/<REPO>/branch/main/graph/badge.svg?token=)](https://codecov.io/gh/<USERNAME>/<REPO>)
 
 **Scaffold production-ready Laravel projects in seconds with Docker, Nginx, Authentication, and more!**
 
