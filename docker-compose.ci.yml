@@ -1,0 +1,10 @@
+services:
+  ci:
+    build:
+      context: .
+      dockerfile: Dockerfile.ci
+    volumes:
+      - ./:/app
+    environment:
+      - XDEBUG_MODE=coverage
+    command: ["sh", "-c", "composer install && vendor/bin/phpunit --coverage-clover=coverage.xml"]

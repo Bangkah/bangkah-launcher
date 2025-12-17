@@ -7,60 +7,25 @@ on:
     branches: [ main, master ]
 
 jobs:
-  laravel-tests:
+  docker-ci:
     runs-on: ubuntu-latest
     steps:
-      # Checkout repository
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # Setup PHP
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: mbstring, xml, bcmath, curl, intl, json, mysql, pdo, tokenizer, zip
-          coverage: xdebug
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      # Install Node.js & npm (opsional, jika menggunakan Laravel Mix/Vite)
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+      - name: Build CI Docker image
+        run: docker build --network=host -f Dockerfile.ci -t bangkah-ci .
 
-      # Clear Composer cache untuk menghindari self-require error
-      - name: Clear Composer Cache
-        run: composer clear-cache
+      - name: Run tests in Docker Compose
+        run: docker compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from ci
 
-      # Cache Composer dependencies (opsional, mempercepat CI)
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      # Install Composer dependencies
-      - name: Install Composer dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
-
-      # Install Node dependencies & build (opsional)
-      - name: Install Node dependencies
-        run: npm install
-      - name: Build assets
-        run: npm run build
-
-      # Set up database (SQLite example, bisa diganti MySQL/PostgreSQL)
-      - name: Prepare database
+      - name: Copy coverage report from container
         run: |
-          touch database/database.sqlite
-          php artisan migrate --force
+          docker cp $(docker ps -a -q -f name=bangkah-ci-1):/app/coverage.xml ./coverage.xml || true
 
-      # Run PHPUnit tests with coverage
-      - name: Run tests
-        run: |
-          vendor/bin/phpunit --coverage-clover=coverage.xml
-
-      # Upload coverage to Codecov
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
