@@ -88,12 +88,7 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://packagist.pkg.github.com/Bangkah"
-        }
-    ],
+    
     "homepage": "https://github.com/Bangkah/bangkah-launcher",
     "support": {
         "issues": "https://github.com/Bangkah/bangkah-launcher/issues",
