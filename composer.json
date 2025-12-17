@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "bangkah/bangkah",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
@@ -88,5 +88,16 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packagist.pkg.github.com/Bangkah"
+        }
+    ],
+    "homepage": "https://github.com/Bangkah/bangkah-launcher",
+    "support": {
+        "issues": "https://github.com/Bangkah/bangkah-launcher/issues",
+        "source": "https://github.com/Bangkah/bangkah-launcher"
+    }
 }

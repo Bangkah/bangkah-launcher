@@ -409,8 +409,8 @@ php artisan bangkah:create \
 ✓ docker-compose.yml (with PostgreSQL)
 ✓ app/Http/Controllers/Api/HealthController.php
 ✓ routes/api.php (with /api/health endpoint)
-✓ bootstrap/app.php (API routes enabled)
-✓ .env (configured for PostgreSQL)
+✓ bootstrap/app.php (API routes enabled for Laravel 12)
+
 ```
 
 **API Endpoint:**

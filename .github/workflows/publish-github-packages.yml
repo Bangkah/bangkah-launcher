@@ -1,0 +1,30 @@
+name: Publish to GitHub Packages
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: GITHUB_TOKEN
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - name: Install Composer
+        run: |
+          composer self-update
+      - name: Configure GitHub Packages Auth
+        run: |
+          composer config --global github-oauth.github.com ${{ vars.PAT_TOKEN }}
+      - name: Publish to GitHub Packages
+        run: |
+          composer install --no-interaction --no-progress
+          composer config repositories.github-packages composer https://packagist.pkg.github.com/Bangkah
+          composer publish
+        env:
+          COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ vars.PAT_TOKEN }}"}}'
