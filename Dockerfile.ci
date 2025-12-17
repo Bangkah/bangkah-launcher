@@ -1,5 +1,5 @@
 # Use the official PHP 8.4 image as base
-FROM php:8.4-rc-cli
+FROM php:8.4-cli
 
 
 # Install system dependencies and build tools for pecl

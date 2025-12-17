@@ -7,4 +7,10 @@ services:
       - ./:/app
     environment:
       - XDEBUG_MODE=coverage
-    command: ["sh", "-c", "composer install && vendor/bin/phpunit --coverage-clover=coverage.xml"]
+      - APP_ENV=testing
+    # Tambahkan perintah untuk copy env dan generate key sebelum test
+    command: >
+      sh -c "cp .env.example .env && 
+             composer install --no-interaction && 
+             php artisan key:generate && 
+             vendor/bin/phpunit --coverage-clover=coverage.xml"
