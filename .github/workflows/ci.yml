@@ -16,6 +16,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Clear Composer cache
+        run: composer clear-cache
+
       - name: Build CI Docker image
         run: docker build --network=host -f Dockerfile.ci -t bangkah-ci .
 
