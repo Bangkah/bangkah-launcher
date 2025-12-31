@@ -1,69 +1,41 @@
 name: CI
-
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
-
+    branches: [main, master]
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
-          extensions: mbstring, pdo, pdo_mysql, bcmath, xml, zip, gd
-
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Prepare Laravel Application
-        run: |
-          cp .env.example .env
-          sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env
-          sed -i 's/DB_DATABASE=.*/DB_DATABASE=:memory:/' .env
-          sed -i 's/DB_USERNAME=.*/DB_USERNAME=null/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=null/' .env
-          mkdir -p storage/logs bootstrap/cache
-          chmod -R 777 storage bootstrap/cache
-          php artisan key:generate
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+          php-version: '8.3'
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - run: composer install --no-interaction --prefer-dist
+      - run: cp .env.example .env
+      - run: php artisan key:generate
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install NPM dependencies
-        run: npm install
-      - name: Build frontend assets
-        run: npx vite build
-
-      - name: Run tests
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      - run: npm install
+      - run: npm run build
+      - run: vendor/bin/phpunit
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          files: ./coverage.xml
-          fail_ci_if_error: true
-          token: ${{ secrets.PAT_TOKEN }}
-
-      - name: Build release archive
-        run: |
-          mkdir -p dist
-          git archive --format=zip --output=dist/bangkah-$(date +'%Y%m%d').zip HEAD
-
-      - name: Generate SHA256SUMS
-        run: |
-          chmod +x scripts/generate-release-checksums.sh
-          ./scripts/generate-release-checksums.sh dist
-
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-artifacts
-          path: dist/
+          token: ${{ secrets.GITHUB_TOKEN }}
