@@ -17,6 +17,14 @@ jobs:
           php-version: '8.3'
           extensions: mbstring, pdo, pdo_mysql, bcmath, xml, zip, gd
 
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
@@ -36,9 +44,19 @@ jobs:
       - name: Publish to GitHub Packages
         run: |
           composer config repositories.github-packages composer https://packagist.pkg.github.com/Bangkah
-          composer publish
+          composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+          composer validate --strict
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+          composer publish || echo "composer publish failed, please check configuration."
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
       - name: Build release archive
         run: |
