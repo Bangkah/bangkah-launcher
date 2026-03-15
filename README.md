@@ -46,6 +46,7 @@
 - [FAQ](#-faq)
 - [Development](#-development)
 - [Advanced Usage](#-advanced-usage)
+- [Project Structure Guide](docs/PROJECT_STRUCTURE.md)
 - [Contributing](#-contributing)
 - [Changelog](#changelog)
 - [License](#-license)

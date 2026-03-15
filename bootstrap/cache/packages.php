@@ -1,4 +1,11 @@
 <?php return array (
+  'bangkah/starter' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Bangkah\\Starter\\BangkahServiceProvider',
+    ),
+  ),
   'laravel/pail' => 
   array (
     'providers' => 
