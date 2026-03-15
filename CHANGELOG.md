@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2026-03-15
+
+### Fixed
+- Restored `bangkah:create` command availability in Laravel launcher project.
+- Ensured Bangkah package dependency and provider wiring are registered correctly for local launcher usage.
+- Stabilized feature tests by removing runtime dependency on built Vite manifest during test execution.
+
+### Changed
+- Cleaned repository structure by removing tracked duplicate sandbox copies under `home/` and `tmp/`.
+- Added repository hygiene rules in `.gitignore` for workspace-only artifacts and route backup files.
+- Added `docs/PROJECT_STRUCTURE.md` to document expected folder layout and cleanup practices.
+
+### Verification
+- `php artisan list bangkah` shows `bangkah:create`.
+- `php artisan bangkah:create --help` executes successfully.
+- `php artisan test` passes.
+
 ## [1.0.1] - 2025-12-15
 
 ### Fixed
@@ -157,6 +174,7 @@ php artisan bangkah:create --type=api --docker --db=postgres --yes
 ---
 
 [1.1.1]: https://github.com/Bangkah/bangkah-launcher/compare/v1.1.0...v1.1.1
+[1.0.5]: https://github.com/Bangkah/bangkah-launcher/releases/tag/v1.0.5
 [1.1.0]: https://github.com/Bangkah/bangkah-launcher/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Bangkah/bangkah-launcher/releases/tag/v1.0.0
 [Unreleased]: https://github.com/Bangkah/bangkah-launcher/compare/v1.1.1...HEAD
