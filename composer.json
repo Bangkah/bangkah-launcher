@@ -2,8 +2,8 @@
     "name": "bangkah/bangkah-launcher",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
+    "license": "MIT",
     "require": {
-        "license": "MIT",
         "php": "^8.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
