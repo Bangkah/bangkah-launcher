@@ -1,3 +1,10 @@
+# =======================================================
+# PENTING:
+# Setelah mengubah dependency di composer.json,
+# jalankan "composer install" lalu commit & push composer.lock
+# Workflow akan gagal jika composer.lock tidak sync.
+# =======================================================
+
 name: Publish to GitHub Packages
 
 on:
@@ -30,6 +37,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
+      - name: Validate Composer lock file is in sync
+        run: composer validate --strict
+
       - name: Prepare Laravel Application
         run: |
           cp .env.example .env
@@ -39,9 +49,6 @@ jobs:
 
       - name: Configure GitHub Packages Auth
         run: composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Ensure composer.lock is up to date
-        run: composer update --lock
 
       - name: Publish to GitHub Packages
         run: |
