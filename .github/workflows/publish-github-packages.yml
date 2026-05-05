@@ -26,6 +26,15 @@ jobs:
           php-version: '8.4'
           extensions: mbstring, pdo, pdo_mysql, bcmath, xml, zip, gd
 
+      - name: Assert PHP version is >= 8.4
+        run: |
+          PHP_VERSION=$(php -r 'echo PHP_VERSION;')
+          if [[ ! "$PHP_VERSION" =~ ^8\.[4-9] ]]; then
+            echo "ERROR: PHP 8.4 or higher is required. Detected: $PHP_VERSION"
+            exit 1
+          fi
+          php -v
+
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
