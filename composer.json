@@ -47,10 +47,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "repositories": {
-        "github-packages": {
-            "type": "composer",
-            "url": "https://packagist.pkg.github.com/Bangkah"
-        },
         "bangkah": {
             "type": "path",
             "url": "packages/bangkah/bangkah"
