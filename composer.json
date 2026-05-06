@@ -45,11 +45,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": {
-        "bangkah": {
-            "type": "path",
-            "url": "packages/bangkah/bangkah"
-        }
-    }
+    "prefer-stable": true
 }
