@@ -61,7 +61,7 @@ jobs:
 
       - name: Publish to GitHub Packages
         run: |
-          composer config repositories.github-packages composer https://packagist.pkg.github.com/Bangkah
+          composer config --global repositories.github-packages composer https://packagist.pkg.github.com/Bangkah
           composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer validate --strict
           composer install --no-interaction --prefer-dist --optimize-autoloader
