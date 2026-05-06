@@ -124,7 +124,8 @@ jobs:
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        continue-on-error: true
         with:
           files: ./coverage.xml
-          fail_ci_if_error: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
