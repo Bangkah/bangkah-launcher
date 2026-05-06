@@ -65,7 +65,11 @@ jobs:
           composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
           composer validate --strict
           composer install --no-interaction --prefer-dist --optimize-autoloader
-          composer publish || echo "composer publish failed, please check configuration."
+          if composer list --raw | awk '{print $1}' | grep -qx "publish"; then
+            composer publish
+          else
+            echo "composer publish command not available, skipping."
+          fi
         env:
           COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ secrets.GITHUB_TOKEN }}"}}'
       - name: Cache npm dependencies
