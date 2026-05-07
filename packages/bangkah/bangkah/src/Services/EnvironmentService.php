@@ -10,71 +10,108 @@ class EnvironmentService
     {
     }
 
+    /**
+     * Set Nama Aplikasi di .env dan .env.example
+     */
     public function setAppName(string $targetPath, string $name): void
     {
-        $this->updateEnv($targetPath, 'APP_NAME', '"'.$name.'"');
-        $this->updateEnvExample($targetPath, 'APP_NAME', '"'.$name.'"');
+        $value = '"' . $name . '"';
+        $this->updateAllEnvFiles($targetPath, 'APP_NAME', $value);
     }
 
+    /**
+     * Konfigurasi Database dan Session
+     */
     public function configureDatabase(string $targetPath, string $dbType, bool $docker = false): void
     {
         $dbType = strtolower($dbType);
         $host = $docker ? 'db' : '127.0.0.1';
-        if ($dbType === 'postgresql' || $dbType === 'postgres' || $dbType === 'pgsql') {
-            $this->updateEnv($targetPath, 'DB_CONNECTION', 'pgsql');
-            $this->updateEnv($targetPath, 'DB_HOST', $host);
-            $this->updateEnv($targetPath, 'DB_PORT', '5432');
-            $this->updateEnv($targetPath, 'DB_DATABASE', 'laravel');
-            $this->updateEnv($targetPath, 'DB_USERNAME', 'root');
-            $this->updateEnv($targetPath, 'DB_PASSWORD', '');
+
+        // 1. Logika Penentuan Driver & Port
+        if ($dbType === 'sqlite') {
+            $this->setupSqlite($targetPath);
         } else {
-            $this->updateEnv($targetPath, 'DB_CONNECTION', 'mysql');
-            $this->updateEnv($targetPath, 'DB_HOST', $host);
-            $this->updateEnv($targetPath, 'DB_PORT', '3306');
-            $this->updateEnv($targetPath, 'DB_DATABASE', 'laravel');
-            $this->updateEnv($targetPath, 'DB_USERNAME', 'root');
-            $this->updateEnv($targetPath, 'DB_PASSWORD', '');
+            $isPgsql = in_array($dbType, ['postgresql', 'postgres', 'pgsql']);
+            
+            $config = [
+                'DB_CONNECTION' => $isPgsql ? 'pgsql' : 'mysql',
+                'DB_HOST'       => $host,
+                'DB_PORT'       => $isPgsql ? '5432' : '3306',
+                'DB_DATABASE'   => 'laravel',
+                'DB_USERNAME'   => 'root',
+                'DB_PASSWORD'   => '',
+            ];
+
+            foreach ($config as $key => $value) {
+                $this->updateAllEnvFiles($targetPath, $key, $value);
+            }
         }
 
-        $this->updateEnvExample($targetPath, 'DB_CONNECTION', $dbType === 'postgresql' || $dbType === 'postgres' || $dbType === 'pgsql' ? 'pgsql' : 'mysql');
-        $this->updateEnvExample($targetPath, 'DB_HOST', $host);
-        $this->updateEnvExample($targetPath, 'DB_PORT', $dbType === 'postgresql' || $dbType === 'postgres' || $dbType === 'pgsql' ? '5432' : '3306');
-        $this->updateEnvExample($targetPath, 'DB_DATABASE', 'laravel');
-        $this->updateEnvExample($targetPath, 'DB_USERNAME', 'laravel');
-        $this->updateEnvExample($targetPath, 'DB_PASSWORD', 'secret');
+        // 2. Set Session Driver ke file agar bisa langsung running tanpa migrate
+        $this->updateAllEnvFiles($targetPath, 'SESSION_DRIVER', 'file');
+        
+        // Opsional: Set driver lain ke file/sync agar lebih ringan saat starter
+        $this->updateAllEnvFiles($targetPath, 'CACHE_STORE', 'file');
+        $this->updateAllEnvFiles($targetPath, 'QUEUE_CONNECTION', 'sync');
     }
 
-    private function updateEnv(string $targetPath, string $key, string $value): void
+    /**
+     * Khusus setup SQLite
+     */
+    private function setupSqlite(string $targetPath): void
     {
-        $envPath = $targetPath.'/.env';
-        if (! $this->files->exists($envPath)) {
-            return;
+        // Update env
+        $this->updateAllEnvFiles($targetPath, 'DB_CONNECTION', 'sqlite');
+        $this->updateAllEnvFiles($targetPath, 'DB_DATABASE', 'database.sqlite');
+        
+        // Kosongkan yang tidak perlu untuk sqlite agar .env bersih
+        $this->updateAllEnvFiles($targetPath, 'DB_HOST', '');
+        $this->updateAllEnvFiles($targetPath, 'DB_PORT', '');
+        $this->updateAllEnvFiles($targetPath, 'DB_USERNAME', '');
+        $this->updateAllEnvFiles($targetPath, 'DB_PASSWORD', '');
+
+        // Buat file database.sqlite jika tidak ada
+        $dbDir = $targetPath . '/database';
+        if (!$this->files->isDirectory($dbDir)) {
+            $this->files->makeDirectory($dbDir, 0755, true);
         }
-        $content = $this->files->get($envPath);
-        $pattern = "/^".preg_quote($key, '/')."=.*/m";
-        $line = $key.'='.$value;
-        if (preg_match($pattern, $content)) {
-            $content = preg_replace($pattern, $line, $content);
-        } else {
-            $content .= "\n".$line."\n";
+
+        $sqlitePath = $dbDir . '/database.sqlite';
+        if (!$this->files->exists($sqlitePath)) {
+            $this->files->put($sqlitePath, '');
         }
-        $this->files->put($envPath, $content);
     }
 
-    private function updateEnvExample(string $targetPath, string $key, string $value): void
+    /**
+     * Update key di .env sekaligus .env.example
+     */
+    private function updateAllEnvFiles(string $targetPath, string $key, string $value): void
     {
-        $envPath = $targetPath.'/.env.example';
-        if (! $this->files->exists($envPath)) {
+        $this->updateEnvFile($targetPath . '/.env', $key, $value);
+        $this->updateEnvFile($targetPath . '/.env.example', $key, $value);
+    }
+
+    /**
+     * Core logic untuk manipulasi file .env
+     */
+    private function updateEnvFile(string $filePath, string $key, string $value): void
+    {
+        if (!$this->files->exists($filePath)) {
             return;
         }
-        $content = $this->files->get($envPath);
-        $pattern = "/^".preg_quote($key, '/')."=.*/m";
-        $line = $key.'='.$value;
+
+        $content = $this->files->get($filePath);
+        $pattern = "/^" . preg_quote($key, '/') . "=.*/m";
+        $newLine = "{$key}={$value}";
+
         if (preg_match($pattern, $content)) {
-            $content = preg_replace($pattern, $line, $content);
+            // Jika key sudah ada, ganti nilainya
+            $content = preg_replace($pattern, $newLine, $content);
         } else {
-            $content .= "\n".$line."\n";
+            // Jika belum ada, tambahkan di baris baru
+            $content = rtrim($content) . "\n" . $newLine . "\n";
         }
-        $this->files->put($envPath, $content);
+
+        $this->files->put($filePath, $content);
     }
 }
